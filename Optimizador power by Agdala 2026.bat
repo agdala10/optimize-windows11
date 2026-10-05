@@ -30,14 +30,14 @@ echo       Ok.
 
 echo [3/8] Desinstalando OneDrive...
 taskkill /f /im OneDrive.exe >nul 2>&1
-%SystemRoot%\SysWOW64\OneDriveSetup.exe /uninstall
-%SystemRoot%\System32\OneDriveSetup.exe /uninstall
+if exist "%SystemRoot%\SysWOW64\OneDriveSetup.exe" %SystemRoot%\SysWOW64\OneDriveSetup.exe /uninstall >nul 2>&1
+if exist "%SystemRoot%\System32\OneDriveSetup.exe" %SystemRoot%\System32\OneDriveSetup.exe /uninstall >nul 2>&1
 rmdir /s /q "%LOCALAPPDATA%\Microsoft\OneDrive" >nul 2>&1
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\OneDrive" /v DisableFileSyncNGSC /t REG_DWORD /d 1 /f >nul
 echo       Ok.
 
 echo [4/8] Quitando apps de Xbox y demas bloque del Store...
-powershell -NoProfile -Command "Get-AppxPackage | Where-Object {.Name -match 'Bing|Xbox|Solitaire|YourPhone|MSTeams|Zune'} | ForEach-Object { Remove-AppxPackage -Package .PackageFullName -ErrorAction SilentlyContinue }"
+powershell -NoProfile -Command "Get-AppxPackage | Where-Object {$_.Name -match 'Bing|Xbox|Solitaire|YourPhone|MSTeams|Zune'} | ForEach-Object { Remove-AppxPackage -Package $_.PackageFullName -ErrorAction SilentlyContinue }"
 echo       Ok.
 
 echo [5/8] Limpiando archivos temporales...
